@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Abdulrahman Alzahrani — Treasury Officer specializing in Trade Finance, Treasury Operations, Financial Reporting, Automation, and Treasury Systems.">
+
+  <meta
+    name="description"
+    content="Abdulrahman Alzahrani — Treasury Officer specializing in Trade Finance, Treasury Operations, Financial Reporting, Automation, and Treasury Systems."
+  >
 
   <title>Abdulrahman Alzahrani | Treasury Officer</title>
 
@@ -20,6 +24,7 @@
       --border: #d9e0e5;
       --paper: #ffffff;
       --background: #eef1f3;
+      --contact-bg: #f1f7f5;
     }
 
     * {
@@ -53,6 +58,34 @@
     }
 
     /* =========================================================
+       PRINT BUTTON
+    ========================================================= */
+
+    .print-controls {
+      width: 100%;
+      max-width: 850px;
+      margin: 0 auto 16px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .print-button {
+      border: 0;
+      padding: 9px 14px;
+      border-radius: 5px;
+      background: var(--heading);
+      color: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .print-button:hover {
+      background: var(--accent);
+    }
+
+    /* =========================================================
        HEADER
     ========================================================= */
 
@@ -78,28 +111,68 @@
       font-weight: 700;
     }
 
+    /* =========================================================
+       CONTACT
+    ========================================================= */
+
     .contact {
       display: flex;
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
-      gap: 5px 14px;
+      gap: 7px 9px;
       color: var(--muted);
-      font-size: 12.5px;
+      font-size: 12px;
     }
 
-    .contact a {
+    .contact-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 8px;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: #fafbfb;
       color: var(--muted);
       text-decoration: none;
+      line-height: 1.25;
+      transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease;
     }
 
-    .contact a:hover {
+    .contact-item:hover {
+      background: var(--contact-bg);
+      border-color: var(--accent);
       color: var(--accent);
-      text-decoration: underline;
     }
 
-    .separator {
-      color: #a0a8af;
+    /* Phone gets slightly stronger emphasis */
+    .contact-item.phone {
+      background: var(--contact-bg);
+      border-color: var(--accent);
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .contact-item.phone:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .contact-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .location {
+      padding: 4px 8px;
     }
 
     /* =========================================================
@@ -129,11 +202,10 @@
       margin: 0;
       font-size: 13.2px;
       line-height: 1.55;
-      text-align: left;
     }
 
     /* =========================================================
-       EXPERIENCE
+       PROFESSIONAL EXPERIENCE
     ========================================================= */
 
     .experience-entry {
@@ -196,7 +268,7 @@
     }
 
     /* =========================================================
-       PROJECTS / SYSTEMS
+       KEY SYSTEMS & AUTOMATION PROJECTS
     ========================================================= */
 
     .project {
@@ -225,8 +297,12 @@
       line-height: 1.48;
     }
 
+    .project li:last-child {
+      margin-bottom: 0;
+    }
+
     /* =========================================================
-       SKILLS
+       CORE SKILLS
     ========================================================= */
 
     .skills {
@@ -288,8 +364,12 @@
       line-height: 1.45;
     }
 
+    .certifications li:last-child {
+      margin-bottom: 0;
+    }
+
     /* =========================================================
-       LEADERSHIP / VOLUNTEERING
+       LEADERSHIP & VOLUNTEERING
     ========================================================= */
 
     .leadership {
@@ -303,33 +383,62 @@
       line-height: 1.45;
     }
 
+    .leadership li:last-child {
+      margin-bottom: 0;
+    }
+
     /* =========================================================
-       PRINT
+       LANGUAGES
     ========================================================= */
 
-    .print-controls {
-      width: 100%;
-      max-width: 850px;
-      margin: 0 auto 16px;
-      display: flex;
-      justify-content: flex-end;
+    .languages {
+      font-size: 12.6px;
+      line-height: 1.45;
     }
 
-    .print-button {
-      border: 0;
-      padding: 9px 14px;
-      border-radius: 5px;
-      background: var(--heading);
-      color: #fff;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+
+    @media screen and (max-width: 700px) {
+
+      body {
+        padding: 0;
+      }
+
+      .cv {
+        max-width: none;
+        padding: 28px 22px;
+        box-shadow: none;
+      }
+
+      .print-controls {
+        padding: 12px 16px 0;
+        margin-bottom: 8px;
+      }
+
+      .experience-header,
+      .education-header {
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .date {
+        white-space: normal;
+      }
+
+      .contact {
+        gap: 6px;
+      }
+
+      .contact-item {
+        font-size: 11.5px;
+      }
     }
 
-    .print-button:hover {
-      background: var(--accent);
-    }
+    /* =========================================================
+       PRINT / PDF
+    ========================================================= */
 
     @media print {
 
@@ -344,35 +453,18 @@
 
       body {
         padding: 0;
-        background: #fff;
+        background: #ffffff;
       }
 
       .cv {
-        max-width: none;
         width: 100%;
+        max-width: none;
         padding: 0;
         box-shadow: none;
       }
 
       .print-controls {
         display: none;
-      }
-
-      section {
-        margin-top: 16px;
-      }
-
-      .experience-entry {
-        margin-bottom: 13px;
-      }
-
-      .project {
-        margin-bottom: 9px;
-      }
-
-      a {
-        color: inherit !important;
-        text-decoration: none !important;
       }
 
       .header {
@@ -387,27 +479,36 @@
         margin-top: 4px;
         margin-bottom: 8px;
       }
-    }
 
-    @media screen and (max-width: 700px) {
+      section {
+        margin-top: 16px;
+      }
 
-      body {
+      .experience-entry {
+        margin-bottom: 13px;
+      }
+
+      .project {
+        margin-bottom: 9px;
+      }
+
+      /* Keep links ATS/PDF friendly but remove web styling */
+      .contact-item,
+      .contact-item.phone {
+        border: none;
         padding: 0;
+        background: none;
+        color: inherit !important;
+        font-weight: 400;
       }
 
-      .cv {
-        padding: 28px 22px;
-        box-shadow: none;
+      .contact-icon {
+        display: none;
       }
 
-      .experience-header,
-      .education-header {
-        flex-direction: column;
-        gap: 2px;
-      }
-
-      .date {
-        white-space: normal;
+      a {
+        color: inherit !important;
+        text-decoration: none !important;
       }
     }
   </style>
@@ -415,21 +516,37 @@
 
 <body>
 
+  <!-- =======================================================
+       PRINT / PDF CONTROL
+  ======================================================== -->
+
   <div class="print-controls">
-    <button class="print-button" onclick="window.print()">
+    <button
+      class="print-button"
+      type="button"
+      onclick="window.print()"
+    >
       Print / Save as PDF
     </button>
   </div>
 
+
+  <!-- =======================================================
+       CV
+  ======================================================== -->
+
   <main class="cv">
 
-    <!-- =======================================================
+
+    <!-- =====================================================
          HEADER
-    ======================================================== -->
+    ====================================================== -->
 
     <header class="header">
 
-      <h1 class="name">Abdulrahman Alzahrani</h1>
+      <h1 class="name">
+        Abdulrahman Alzahrani
+      </h1>
 
       <div class="professional-title">
         Treasury Officer | Trade Finance | Treasury Operations | Financial Reporting &amp; Automation
@@ -437,25 +554,36 @@
 
       <div class="contact">
 
-        <span>Riyadh, Saudi Arabia</span>
+        <span class="contact-item location">
+          Riyadh, Saudi Arabia
+        </span>
 
-        <span class="separator">|</span>
+        <a
+          class="contact-item phone"
+          href="tel:+966508498788"
+          aria-label="Call Abdulrahman Alzahrani"
+        >
+          <span class="contact-icon">☎</span>
+          +966 50 849 8788
+        </a>
 
-        <span>+966 50 849 8788</span>
-
-        <span class="separator">|</span>
-
-        <a href="mailto:abdulrahmanfin@outlook.com">
+        <a
+          class="contact-item"
+          href="mailto:abdulrahmanfin@outlook.com"
+          aria-label="Email Abdulrahman Alzahrani"
+        >
+          <span class="contact-icon">✉</span>
           abdulrahmanfin@outlook.com
         </a>
 
-        <span class="separator">|</span>
-
         <a
+          class="contact-item"
           href="https://www.linkedin.com/in/abdulrahman-alzahrani-43713128b"
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="Abdulrahman Alzahrani LinkedIn profile"
         >
+          <span class="contact-icon">in</span>
           LinkedIn
         </a>
 
@@ -464,9 +592,9 @@
     </header>
 
 
-    <!-- =======================================================
+    <!-- =====================================================
          PROFESSIONAL SUMMARY
-    ======================================================== -->
+    ====================================================== -->
 
     <section>
 
@@ -475,15 +603,15 @@
       </h2>
 
       <p class="summary">
-        Treasury Officer specializing in Trade Finance and Treasury Operations, with hands-on experience across Letters of Credit (LC), Letters of Guarantee (LG), Bills for Collection (BC), LC amendments, bank correspondence, credit risk assessment, payment execution, and treasury reporting. Proven track record of process automation, reducing trade finance case processing time from approximately 30 minutes to 5 minutes and monthly treasury reporting from up to 8 hours to seconds. Experienced in developing internal systems and automation solutions using Excel/VBA, SAP, Power Apps, Power Automate, and AI-assisted development. FMVA certified with a Bachelor's degree in Finance and Banking.
+        Treasury Officer specializing in Trade Finance and Treasury Operations, with hands-on experience across Letters of Credit (LC), Letters of Guarantee (LG), Bills for Collection (BC), LC amendments, SWIFT MT700, bank Trade Operations correspondence, credit risk assessment, payment execution, and treasury reporting. Proven track record of process automation, reducing trade finance case processing time from approximately 30 minutes to 5 minutes and monthly treasury reporting from up to 8 hours to seconds. Experienced in developing internal systems and automation solutions using Excel/VBA, SAP, Power Apps, Power Automate, and AI-assisted development. FMVA certified with a Bachelor's degree in Finance and Banking.
       </p>
 
     </section>
 
 
-    <!-- =======================================================
+    <!-- =====================================================
          PROFESSIONAL EXPERIENCE
-    ======================================================== -->
+    ====================================================== -->
 
     <section>
 
@@ -492,7 +620,9 @@
       </h2>
 
 
-      <!-- TPMC -->
+      <!-- ===================================================
+           TPMC
+      ==================================================== -->
 
       <article class="experience-entry">
 
@@ -510,7 +640,9 @@
 
         <div class="company">
           Tabuk Pharmaceuticals Manufacturing Company (TPMC)
-          <span class="company-location">— Riyadh, Saudi Arabia</span>
+          <span class="company-location">
+            — Riyadh, Saudi Arabia
+          </span>
         </div>
 
         <ul>
@@ -529,15 +661,18 @@
           <li>
             Built an internal trade finance tool to track approximately
             <strong>4 Letters of Credit per month</strong> and
-            <strong>15+ Bills for Collection per month</strong>, while automating the preparation of printed documents; replaced email-based tracking and reduced processing time per case from approximately <strong>30 minutes to 5 minutes</strong>. The tool is now used by the full trade finance team.
+            <strong>15+ Bills for Collection per month</strong>, while automating the preparation of printed documents; replaced email-based tracking and reduced processing time per case from approximately
+            <strong>30 minutes to 5 minutes</strong>. The tool is now used by the full trade finance team.
           </li>
 
           <li>
-            Oversee inward <strong>Bills for Collection (BC)</strong>, coordinating shipping documents between banks and logistics providers to support timely document handling and avoid supply chain delays.
+            Oversee inward
+            <strong>Bills for Collection (BC)</strong>, coordinating shipping documents between banks and logistics providers to support timely document handling and avoid supply chain delays.
           </li>
 
           <li>
-            Conduct customer <strong>Credit Rating (CR)</strong> evaluations and credit risk assessments, supporting treasury risk management and customer exposure decisions.
+            Conduct customer
+            <strong>Credit Rating (CR)</strong> evaluations and credit risk assessments, supporting treasury risk management and customer exposure decisions.
           </li>
 
           <li>
@@ -546,11 +681,13 @@
 
           <li>
             Automated monthly treasury reporting covering
-            <strong>Sales, Accounts Receivable, Collections, and Overdue balances</strong> by pulling data directly from SAP into a VBA-based dashboard generator, reducing report preparation time from up to <strong>8 hours to seconds</strong>.
+            <strong>Sales, Accounts Receivable, Collections, and Overdue balances</strong> by pulling data directly from SAP into a VBA-based dashboard generator, reducing report preparation time from up to
+            <strong>8 hours to seconds</strong>.
           </li>
 
           <li>
-            Produce customer-level rankings, cluster-level summaries, and year-over-year comparative analysis with automated charts; reporting is used by the <strong>Treasury Manager and Finance Director</strong>.
+            Produce customer-level rankings, cluster-level summaries, and year-over-year comparative analysis with automated charts; reporting is used by the
+            <strong>Treasury Manager and Finance Director</strong>.
           </li>
 
           <li>
@@ -567,7 +704,9 @@
       </article>
 
 
-      <!-- Jahez -->
+      <!-- ===================================================
+           JAHEZ
+      ==================================================== -->
 
       <article class="experience-entry">
 
@@ -585,7 +724,9 @@
 
         <div class="company">
           Jahez International Company
-          <span class="company-location">— Riyadh, Saudi Arabia</span>
+          <span class="company-location">
+            — Riyadh, Saudi Arabia
+          </span>
         </div>
 
         <ul>
@@ -614,9 +755,9 @@
     </section>
 
 
-    <!-- =======================================================
+    <!-- =====================================================
          KEY SYSTEMS & AUTOMATION PROJECTS
-    ======================================================== -->
+    ====================================================== -->
 
     <section>
 
@@ -624,6 +765,8 @@
         Key Systems &amp; Automation Projects
       </h2>
 
+
+      <!-- TMS -->
 
       <article class="project">
 
@@ -651,6 +794,8 @@
       </article>
 
 
+      <!-- Treasury Reporting -->
+
       <article class="project">
 
         <h3 class="project-title">
@@ -677,6 +822,8 @@
       </article>
 
 
+      <!-- Trade Finance -->
+
       <article class="project">
 
         <h3 class="project-title">
@@ -691,7 +838,8 @@
 
           <li>
             Handles approximately
-            <strong>4 LCs and 15+ Bills for Collection per month</strong>, replacing email-based tracking and reducing processing time per case from approximately <strong>30 minutes to 5 minutes</strong>.
+            <strong>4 LCs and 15+ Bills for Collection per month</strong>, replacing email-based tracking and reducing processing time per case from approximately
+            <strong>30 minutes to 5 minutes</strong>.
           </li>
 
           <li>
@@ -706,9 +854,9 @@
     </section>
 
 
-    <!-- =======================================================
+    <!-- =====================================================
          CORE SKILLS
-    ======================================================== -->
+    ====================================================== -->
 
     <section>
 
@@ -719,27 +867,37 @@
       <div class="skills">
 
         <div class="skill">
-          <span class="skill-label">Treasury &amp; Trade Finance:</span>
+          <span class="skill-label">
+            Treasury &amp; Trade Finance:
+          </span>
           Letters of Credit (LC), Letters of Guarantee (LG), Bills for Collection (BC), LC Amendments, SWIFT MT700, LC Documentation, Bank Trade Operations Correspondence, Payment Execution, Bank Reconciliations
         </div>
 
         <div class="skill">
-          <span class="skill-label">Credit &amp; Risk:</span>
+          <span class="skill-label">
+            Credit &amp; Risk:
+          </span>
           Customer Credit Rating (CR), Credit Risk Assessment, Customer Exposure Analysis, Financial Analysis
         </div>
 
         <div class="skill">
-          <span class="skill-label">Treasury Reporting &amp; Analysis:</span>
+          <span class="skill-label">
+            Treasury Reporting &amp; Analysis:
+          </span>
           Treasury Reporting, Accounts Receivable, Collections, Overdue Analysis, Customer-Level Analysis, Cluster-Level Analysis, Year-over-Year Analysis, KPI Reporting, Management Dashboards
         </div>
 
         <div class="skill">
-          <span class="skill-label">Systems &amp; Automation:</span>
+          <span class="skill-label">
+            Systems &amp; Automation:
+          </span>
           SAP, Microsoft Dynamics 365, Microsoft Excel, VBA, Microsoft Power Apps, Microsoft Power Automate, Internal Systems Development, Treasury Management Systems, Workflow Automation
         </div>
 
         <div class="skill">
-          <span class="skill-label">AI-Assisted Development:</span>
+          <span class="skill-label">
+            AI-Assisted Development:
+          </span>
           AI-assisted requirements analysis, software development, code auditing, testing, workflow design, Claude, ChatGPT, Gemini
         </div>
 
@@ -748,9 +906,9 @@
     </section>
 
 
-    <!-- =======================================================
+    <!-- =====================================================
          EDUCATION
-    ======================================================== -->
+    ====================================================== -->
 
     <section>
 
@@ -781,9 +939,9 @@
     </section>
 
 
-    <!-- =======================================================
+    <!-- =====================================================
          CERTIFICATIONS
-    ======================================================== -->
+    ====================================================== -->
 
     <section>
 
@@ -794,7 +952,8 @@
       <ul class="certifications">
 
         <li>
-          <strong>Financial Modeling and Valuation Analyst (FMVA)</strong> — Corporate Finance Institute (CFI)
+          <strong>Financial Modeling and Valuation Analyst (FMVA)</strong>
+          — Corporate Finance Institute (CFI)
         </li>
 
         <li>
@@ -810,9 +969,9 @@
     </section>
 
 
-    <!-- =======================================================
+    <!-- =====================================================
          LEADERSHIP & VOLUNTEERING
-    ======================================================== -->
+    ====================================================== -->
 
     <section>
 
@@ -827,7 +986,9 @@
         </li>
 
         <li>
-          Accumulated <strong>1,030 officially recognized volunteer hours</strong> in community service and event coordination.
+          Accumulated
+          <strong>1,030 officially recognized volunteer hours</strong>
+          in community service and event coordination.
         </li>
 
       </ul>
@@ -835,9 +996,9 @@
     </section>
 
 
-    <!-- =======================================================
+    <!-- =====================================================
          LANGUAGES
-    ======================================================== -->
+    ====================================================== -->
 
     <section>
 
@@ -845,13 +1006,12 @@
         Languages
       </h2>
 
-      <div class="skill">
-        <span class="skill-label">Arabic</span>
-        &nbsp; | &nbsp;
-        <span class="skill-label">English</span>
+      <div class="languages">
+        Arabic &nbsp; | &nbsp; English
       </div>
 
     </section>
+
 
   </main>
 
