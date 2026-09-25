@@ -1,0 +1,253 @@
+{
+  "_readme": "Source of truth for project pages. See README.md › Adding a project. Only verified facts belong here; unconfirmed role or results stay null and are not rendered.",
+  "statuses": {
+    "public": {
+      "en": "Public app"
+    },
+    "internal": {
+      "en": "Internal tool"
+    },
+    "prototype": {
+      "en": "Prototype"
+    },
+    "in-progress": {
+      "en": "In progress"
+    }
+  },
+  "families": {
+    "trade-toolkit": {
+      "name": {
+        "en": "Trade finance toolkit"
+      },
+      "text": {
+        "en": "One internal toolkit with separate tools for different trade-finance tasks."
+      }
+    }
+  },
+  "projects": [
+    {
+      "slug": "trade-documents-generator",
+      "featured": true,
+      "status": "internal",
+      "year": "2026",
+      "title": {
+        "en": "Trade Finance Document Generator"
+      },
+      "type": {
+        "en": "Internal tool · demo rebuilt with fictional data"
+      },
+      "summary": {
+        "en": "Prepares the export documents presented to a bank under a letter of credit — cover letter and bill of exchange — from a single entry, with the amount written out in words."
+      },
+      "problem": {
+        "en": "Presenting export documents under a letter of credit means repeating the same LC number, invoice numbers and amount across several documents, and writing the amount out in words. The figures have to agree on every document before they go to the bank."
+      },
+      "features": {
+        "en": [
+          "One form for the LC number, internal reference, customer, currency and one or more invoices; the amount is totalled from the invoices.",
+          "Cover letter to the bank listing the enclosed documents with original and copy counts, starting from an editable standard set.",
+          "Bill of exchange in first and second copies, with a supporting-invoice table.",
+          "Amount in words generated from the figure (for example “… and 50/100 US Dollars”), with a manual override.",
+          "A certificate of analysis generated from the same entry.",
+          "Live preview, and printing of one document or all of them.",
+          "A companion page in the toolkit prepares import-side letters: the LC request, comments before issuance and specimen-signature letters (not included in the demo)."
+        ]
+      },
+      "technologies": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "Browser print"
+      ],
+      "role": null,
+      "outcome": null,
+      "notice": {
+        "en": "The original tool is used internally and contains organisation details, so it is not linked here. The demo is a separate rebuild for this portfolio with fictional names (Example Company, Demo Bank) and invented reference numbers. It covers the cover letter and bill of exchange."
+      },
+      "image": {
+        "src": "assets/img/projects/trade-documents-1280.webp",
+        "srcset": "assets/img/projects/trade-documents-640.webp 640w, assets/img/projects/trade-documents-1280.webp 1280w",
+        "width": 1280,
+        "height": 800,
+        "alt": {
+          "en": "Demo of the document generator: a form on the left and a bill of exchange preview on the right, filled with fictional data."
+        },
+        "caption": {
+          "en": "Portfolio demo with fictional data."
+        }
+      },
+      "links": {
+        "demo": "demo/trade-documents/",
+        "source": null,
+        "live": null
+      },
+      "family": "trade-toolkit"
+    },
+    {
+      "slug": "lc-lg-commission-calculator",
+      "featured": true,
+      "status": "internal",
+      "year": "2026",
+      "title": {
+        "en": "LC & LG Commission Calculator"
+      },
+      "type": {
+        "en": "Internal tool · demo rebuilt with fictional data"
+      },
+      "summary": {
+        "en": "Recomputes tiered commissions on letters of credit and letters of guarantee and compares the result with the amount a bank charged."
+      },
+      "problem": {
+        "en": "Commissions on letters of credit and guarantees are tiered by amount and by period. Checking a charge on a bank advice means reproducing that arithmetic by hand."
+      },
+      "features": {
+        "en": [
+          "Letters of credit: new issuance, increase in value, extension of validity, other amendments and advising.",
+          "Tiered opening commission on an L/C: a lower rate above a threshold amount, plus a monthly charge beyond the first three months.",
+          "Letters of guarantee: an annual rate pro-rated by days (Actual/365) or by months.",
+          "Optional bank minimum fee, VAT, and a variance check against the amount the bank charged.",
+          "A reference table of the rates used, which the tool attributes to SAMA’s Fees Guide for Financial Institutions’ Services, and a printable result."
+        ]
+      },
+      "technologies": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "role": null,
+      "outcome": null,
+      "notice": {
+        "en": "The original is an internal tool and is not linked here. The demo re-implements the same calculation for illustration only; its rates have not been checked against the current edition of the fees guide."
+      },
+      "image": {
+        "src": "assets/img/projects/commission-calculator-1280.webp",
+        "srcset": "assets/img/projects/commission-calculator-640.webp 640w, assets/img/projects/commission-calculator-1280.webp 1280w",
+        "width": 1280,
+        "height": 800,
+        "alt": {
+          "en": "Demo of the commission calculator showing the tiered LC commission breakdown for an example amount."
+        },
+        "caption": {
+          "en": "Portfolio demo with example inputs."
+        }
+      },
+      "links": {
+        "demo": "demo/commission-calculator/",
+        "source": null,
+        "live": null
+      },
+      "family": "trade-toolkit"
+    },
+    {
+      "slug": "mihsab",
+      "featured": true,
+      "status": "public",
+      "year": "2026",
+      "title": {
+        "en": "Mihsab — calculator platform"
+      },
+      "type": {
+        "en": "Web app · Arabic and English"
+      },
+      "summary": {
+        "en": "An Arabic-first web platform of 21 everyday calculators in four categories — money, cars, travel and lifestyle — including zakat, VAT, salary and loan calculators."
+      },
+      "problem": {
+        "en": "Everyday calculations that depend on local rules — zakat, VAT, social-insurance deductions, fuel prices — need a tool that applies those rules and works in Arabic as well as English."
+      },
+      "features": {
+        "en": [
+          "21 calculators grouped into money, cars, travel and lifestyle, with search across all of them.",
+          "Arabic and English versions with right-to-left and left-to-right layouts.",
+          "Calculation logic kept separate from the interface and covered by automated unit tests.",
+          "Accepts Arabic-Indic digits in number fields.",
+          "Results can be shared through the page address; static assets are cached for offline use."
+        ]
+      },
+      "technologies": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "next-intl",
+        "Tailwind CSS",
+        "Vitest"
+      ],
+      "role": null,
+      "outcome": null,
+      "notice": null,
+      "image": {
+        "src": "assets/img/projects/mihsab-1280.webp",
+        "srcset": "assets/img/projects/mihsab-640.webp 640w, assets/img/projects/mihsab-1280.webp 1280w",
+        "width": 1280,
+        "height": 800,
+        "alt": {
+          "en": "Arabic home page of the Mihsab calculator platform."
+        },
+        "caption": {
+          "en": "Home page (Arabic), captured from a local build of the project."
+        }
+      },
+      "links": {
+        "demo": null,
+        "source": "https://github.com/abdulrahmanal-zahrani/Calculator-more",
+        "live": null
+      }
+    },
+    {
+      "slug": "lc-amendment-desk",
+      "featured": false,
+      "status": "prototype",
+      "year": "2026",
+      "title": {
+        "en": "LC Amendment Desk"
+      },
+      "type": {
+        "en": "Prototype · runs in the browser"
+      },
+      "summary": {
+        "en": "Reads a supplier’s marked-up draft letter of credit — Word comments and tracked changes, PDF drafts, or remarks sent by email — and lays each requested change out in a seven-column amendment table for review."
+      },
+      "problem": {
+        "en": "Supplier comments on a draft LC arrive in different forms. Each remark has to be matched to the right MT700 field, with the current wording beside the requested change, before the amendment request can be reviewed."
+      },
+      "features": {
+        "en": [
+          "Extracts comments, tracked changes and highlights from a Word draft and matches each to its MT700 field, with the current wording beside the requested change.",
+          "Reads marked-up PDF drafts through pdf.js.",
+          "Splits remarks pasted from an email, drops greetings and sign-offs, and matches each remark to a field by tag, quoted wording or field name.",
+          "Leaves unclear remarks flagged as needing clarification instead of guessing.",
+          "Splits one comment that contains two separate requests into two amendment rows.",
+          "Editable review grid with search and sorting; export to Excel and Word."
+        ]
+      },
+      "technologies": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "pdf.js"
+      ],
+      "role": null,
+      "outcome": null,
+      "notice": {
+        "en": "Prototype, not published as an app. The screenshot uses a synthetic sample draft."
+      },
+      "image": {
+        "src": "assets/img/projects/lc-amendment-desk-1280.webp",
+        "srcset": "assets/img/projects/lc-amendment-desk-640.webp 640w, assets/img/projects/lc-amendment-desk-1280.webp 1280w",
+        "width": 1280,
+        "height": 800,
+        "alt": {
+          "en": "The LC Amendment Desk showing a synthetic sample draft and the amendment table."
+        },
+        "caption": {
+          "en": "Prototype with a synthetic sample draft."
+        }
+      },
+      "links": {
+        "demo": null,
+        "source": null,
+        "live": null
+      }
+    }
+  ]
+}
