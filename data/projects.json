@@ -184,68 +184,12 @@
           "en": "Arabic home page of the Mihsab calculator platform."
         },
         "caption": {
-          "en": "Home page (Arabic), captured from a local build of the project."
+          "en": "Home page (Arabic), captured from a local build of the project and shown in grayscale."
         }
       },
       "links": {
         "demo": null,
         "source": "https://github.com/abdulrahmanal-zahrani/Calculator-more",
-        "live": null
-      }
-    },
-    {
-      "slug": "lc-amendment-desk",
-      "featured": false,
-      "status": "prototype",
-      "year": "2026",
-      "title": {
-        "en": "LC Amendment Desk"
-      },
-      "type": {
-        "en": "Prototype · runs in the browser"
-      },
-      "summary": {
-        "en": "Reads a supplier’s marked-up draft letter of credit — Word comments and tracked changes, PDF drafts, or remarks sent by email — and lays each requested change out in a seven-column amendment table for review."
-      },
-      "problem": {
-        "en": "Supplier comments on a draft LC arrive in different forms. Each remark has to be matched to the right MT700 field, with the current wording beside the requested change, before the amendment request can be reviewed."
-      },
-      "features": {
-        "en": [
-          "Extracts comments, tracked changes and highlights from a Word draft and matches each to its MT700 field, with the current wording beside the requested change.",
-          "Reads marked-up PDF drafts through pdf.js.",
-          "Splits remarks pasted from an email, drops greetings and sign-offs, and matches each remark to a field by tag, quoted wording or field name.",
-          "Leaves unclear remarks flagged as needing clarification instead of guessing.",
-          "Splits one comment that contains two separate requests into two amendment rows.",
-          "Editable review grid with search and sorting; export to Excel and Word."
-        ]
-      },
-      "technologies": [
-        "HTML",
-        "CSS",
-        "JavaScript",
-        "pdf.js"
-      ],
-      "role": null,
-      "outcome": null,
-      "notice": {
-        "en": "Prototype, not published as an app. The screenshot uses a synthetic sample draft."
-      },
-      "image": {
-        "src": "assets/img/projects/lc-amendment-desk-1280.webp",
-        "srcset": "assets/img/projects/lc-amendment-desk-640.webp 640w, assets/img/projects/lc-amendment-desk-1280.webp 1280w",
-        "width": 1280,
-        "height": 800,
-        "alt": {
-          "en": "The LC Amendment Desk showing a synthetic sample draft and the amendment table."
-        },
-        "caption": {
-          "en": "Prototype with a synthetic sample draft."
-        }
-      },
-      "links": {
-        "demo": null,
-        "source": null,
         "live": null
       }
     }

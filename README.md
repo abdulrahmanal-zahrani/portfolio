@@ -85,6 +85,7 @@ and `node tools/serve.mjs` running):
 ```sh
 node tools/qa/browser-check.mjs <outDir>   # pages, paths, viewer, keyboard, demos, print, a11y, RTL
 node tools/qa/capture-pages.mjs <outDir>   # desktop and phone screenshots
-node tools/qa/capture-project-images.mjs <outDir> [appUrl] [fileUrl]
+node tools/qa/capture-project-images.mjs <outDir> [appUrl]
+python3 tools/qa/process-project-images.py <outDir>   # grayscale WebP for the site
 node tools/qa/capture-og.mjs               # share image and touch icon
 ```

@@ -11,7 +11,7 @@ const AXE = readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
 const BASE = 'http://localhost:8080/portfolio/';
 const OUT = process.argv[2];
 const PAGES = ['', 'projects/', 'projects/trade-documents-generator/', 'projects/lc-lg-commission-calculator/',
-  'projects/mihsab/', 'projects/lc-amendment-desk/', 'demo/trade-documents/', 'demo/commission-calculator/',
+  'projects/mihsab/', 'demo/trade-documents/', 'demo/commission-calculator/',
   'cv.html', 'certificates.html', 'references.html', 'viewer.html?doc=fmva'];
 
 let pass = 0, fail = 0;
@@ -54,17 +54,34 @@ for (const p of PAGES) {
 }
 
 // ---------- Paths, case and legacy links under /portfolio/ ----------
+// Each case records how the browser gets to the canonical URL:
+//   200      served directly by the host
+//   301      host-side redirect (GitHub Pages does this for directories)
+//   404+JS   the host answers 404 with 404.html, whose script redirects
 const redirects = [
-  ['CV.html', 'cv.html'], ['Index.html', ''], ['Projects/Mihsab/', 'projects/mihsab/'], ['projects', 'projects/'],
-  ['projects/mihsab', 'projects/mihsab/'], ['Certificates.HTML', 'certificates.html'],
-  ['Resources/Referances.pdf', 'Resources/References.pdf'], ['Resources/References/Recommendation1.pdf', 'references.html'],
-  ['Resources/Recommendations/Recommendation5.pdf', 'references.html'], ['Certificates/FMVA.pdf', 'Resources/Certificates/FMVA.pdf'],
-  ['Resources/FMVA.pdf', 'Resources/Certificates/FMVA.pdf'], ['Resources/cv.html', 'cv.html']
+  ['cv', 'cv', '200'], ['projects', 'projects/', '301'], ['projects/mihsab', 'projects/mihsab/', '301'],
+  ['CV.html', 'cv.html', '404+JS'], ['Index.html', '', '404+JS'], ['Projects/Mihsab/', 'projects/mihsab/', '404+JS'],
+  ['Certificates.HTML', 'certificates.html', '404+JS'], ['Resources/Referances.pdf', 'Resources/References.pdf', '404+JS'],
+  ['Resources/References/Recommendation1.pdf', 'references.html', '404+JS'],
+  ['Resources/Recommendations/Recommendation5.pdf', 'references.html', '404+JS'],
+  ['Certificates/FMVA.pdf', 'Resources/Certificates/FMVA.pdf', '404+JS'], ['Resources/FMVA.pdf', 'Resources/Certificates/FMVA.pdf', '404+JS'],
+  ['Resources/cv.html', 'cv.html', '404+JS']
 ];
-for (const [from, to] of redirects) {
+const pathTable = [];
+for (const [from, to, expected] of redirects) {
+  const raw = await page.request.get(BASE + from, { maxRedirects: 0 });
+  const status = raw.status();
+  const mechanism = status === 200 ? '200' : status === 301 ? '301' : status === 404 ? '404+JS' : String(status);
   await page.goto(BASE + from, { waitUntil: 'load' }).catch(() => {});
   await page.waitForTimeout(300);
-  check('paths', `/portfolio/${from} → /portfolio/${to}`, page.url() === BASE + to, page.url());
+  const ok = page.url() === BASE + to && mechanism === expected;
+  pathTable.push(`${from.padEnd(46)} ${mechanism.padEnd(7)} → /portfolio/${to}`);
+  check('paths', `/portfolio/${from} → /portfolio/${to} via ${expected}`, ok, `${mechanism} → ${page.url()}`);
+}
+// Every canonical page must be served directly with 200 (no redirect of any kind).
+for (const p of PAGES.map((x) => x.split('?')[0])) {
+  const raw = await page.request.get(BASE + p, { maxRedirects: 0 });
+  check('paths', `/portfolio/${p} served directly (200, no redirect)`, raw.status() === 200, String(raw.status()));
 }
 const nf = await page.goto(BASE + 'does-not-exist', { waitUntil: 'load' });
 check('paths', 'unknown path shows the 404 page', nf.status() === 404 && (await page.textContent('h1')) === 'Page not found');
@@ -240,5 +257,5 @@ for (const p of rtlPages) {
 await browser.close();
 console.log(results.join('\n'));
 console.log(`\n${pass} passed, ${fail} failed`);
-if (OUT) writeFileSync(`${OUT}/browser-check.txt`, results.join('\n') + `\n\n${pass} passed, ${fail} failed\n`);
+if (OUT) writeFileSync(`${OUT}/browser-check.txt`, results.join('\n') + `\n\n${pass} passed, ${fail} failed\n\nPath mechanisms (initial HTTP status → final URL):\n${pathTable.join('\n')}\n`);
 process.exit(fail ? 1 : 0);

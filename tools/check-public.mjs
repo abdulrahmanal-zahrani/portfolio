@@ -22,7 +22,7 @@ const OWN = { emails: ['abdulrahmanfin@outlook.com', 'noreply@anthropic.com'], p
 const CV_FILES = new Set(['cv.html', 'src/pages/cv.html']);
 // Owner-supplied documents published before the redesign; reviewed by hand.
 const OWNER_DOCS = new Set(['Resources/References.pdf', 'Resources/Certificates/FMVA.pdf']);
-const TEXT = new Set(['.html', '.css', '.js', '.mjs', '.json', '.md', '.txt', '.svg', '.xml', '']);
+const TEXT = new Set(['.html', '.css', '.js', '.mjs', '.py', '.json', '.md', '.txt', '.svg', '.xml', '']);
 const IMAGES = new Set(['.png', '.jpg', '.jpeg', '.webp']);
 const FONTS = new Set(['.woff2']);
 

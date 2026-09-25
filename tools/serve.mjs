@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 // Local preview that behaves like GitHub Pages for this project site:
-// served under /portfolio/, case-sensitive paths, directory → index.html,
-// and 404.html (with a 404 status) for anything missing.
+//   - served under /portfolio/ ("/portfolio" → 301 "/portfolio/")
+//   - case-sensitive paths
+//   - a directory without a trailing slash → 301 to the slash form
+//   - directory → its index.html; "/name" → "name.html" when that file exists
+//   - anything else → 404.html with HTTP status 404
+// Not reproduced: HTTPS, caching headers, gzip.
 //   node tools/serve.mjs [port]   → http://localhost:8080/portfolio/
 import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
@@ -34,6 +38,8 @@ createServer(async (req, res) => {
         res.writeHead(301, { Location: url.pathname + '/' + url.search }); return res.end();
       }
       found = p;
+      // GitHub Pages also serves "/cv" from "cv.html".
+      if (!found && !extname(rel)) found = await file(join(ROOT, rel + '.html'));
     }
   }
   const status = found ? 200 : 404;
