@@ -1,0 +1,169 @@
+<!--meta
+{
+  "path": "demo/commission-calculator/index.html",
+  "title": "LC & LG commission calculator — demo",
+  "description": "Illustrative demo of a tiered commission check for letters of credit and guarantees. Example inputs; not a statement of any current tariff.",
+  "nav": "projects",
+  "bodyClass": "demo-print-scope",
+  "scripts": ["assets/js/demo/commission-engine.js", "assets/js/demo/commission.js"],
+  "breadcrumb": [["Projects", "projects/"], ["LC & LG Commission Calculator", "projects/lc-lg-commission-calculator/"], ["Demo", null]]
+}
+-->
+<div class="container">
+  <header class="page-head">
+    {{breadcrumb}}
+    <p class="eyebrow">Demo — example inputs</p>
+    <h1 class="h1">LC &amp; LG commission calculator</h1>
+    <p class="lead">Recomputes a tiered commission on a letter of credit or a letter of guarantee and checks it against the amount on a bank advice.</p>
+  </header>
+
+  <div class="notice" role="note">
+    {{icon:info}}
+    <p><strong>Illustrative demo, rebuilt for this portfolio.</strong> The rates are the ones the original internal tool uses, which it attributes to SAMA’s Fees Guide for Financial Institutions’ Services. They have not been checked here against the current edition or its effective date, so do not rely on the results for real charges.</p>
+  </div>
+
+  <form id="calc" class="demo-grid" novalidate>
+    <div class="panel">
+      <fieldset>
+        <legend class="label">Instrument</legend>
+        <div class="switcher">
+          <label><input type="radio" name="product" value="lc" checked><span>Letter of credit</span></label>
+          <label><input type="radio" name="product" value="lg"><span>Letter of guarantee</span></label>
+        </div>
+      </fieldset>
+
+      <div id="lc-inputs">
+        <div class="field">
+          <label for="lc-type">Transaction</label>
+          <select class="select" id="lc-type" name="lcType">
+            <option value="new" selected>New L/C</option>
+            <option value="increase">Increase in value</option>
+            <option value="extension">Extension of validity</option>
+            <option value="amendment">Other amendment</option>
+            <option value="advising">Advising only</option>
+          </select>
+        </div>
+        <div class="field" data-show="new increase extension">
+          <label for="lc-amount" id="lc-amount-label">L/C amount</label>
+          <div class="input-group"><input class="input" id="lc-amount" name="lcAmount" type="number" inputmode="decimal" min="0" step="0.01" value="1250000"><span class="suffix">SAR</span></div>
+        </div>
+        <div class="field" data-show="new increase">
+          <label for="lc-months">Validity</label>
+          <div class="input-group"><input class="input" id="lc-months" name="lcMonths" type="number" inputmode="decimal" min="0" step="1" value="6"><span class="suffix">months</span></div>
+          <span class="helper">A part month counts as a full month.</span>
+        </div>
+        <div class="field" data-show="extension">
+          <label for="lc-ext">Extension length</label>
+          <div class="input-group"><input class="input" id="lc-ext" name="lcExt" type="number" inputmode="decimal" min="0" step="1" value="2"><span class="suffix">months</span></div>
+          <span class="helper">Charged at 1/16% a month on the full amount.</span>
+        </div>
+        <div class="field-row" data-show="amendment">
+          <div class="field">
+            <label for="lc-amend-fee">Amendment fee</label>
+            <div class="input-group"><input class="input" id="lc-amend-fee" name="lcAmendFee" type="number" inputmode="decimal" min="0" step="0.01" value="25"><span class="suffix">SAR</span></div>
+          </div>
+          <div class="field">
+            <label for="lc-cable">Telex / cable / mail</label>
+            <div class="input-group"><input class="input" id="lc-cable" name="lcCable" type="number" inputmode="decimal" min="0" step="0.01" value="0"><span class="suffix">SAR</span></div>
+          </div>
+        </div>
+        <div class="field" data-show="new increase">
+          <label for="lc-min">Bank minimum opening commission</label>
+          <div class="input-group"><input class="input" id="lc-min" name="lcMin" type="number" inputmode="decimal" min="0" step="0.01" value="0"><span class="suffix">SAR</span></div>
+          <span class="helper">Set by each bank, not by the guide. Leave at 0 if none.</span>
+        </div>
+        <div class="field-row" data-show="new increase extension advising">
+          <div class="field">
+            <label for="lc-adv">Additional advising fee</label>
+            <div class="input-group"><input class="input" id="lc-adv" name="lcAdv" type="number" inputmode="decimal" min="0" step="0.01" value="0"><span class="suffix">SAR</span></div>
+          </div>
+          <div class="field">
+            <label for="lc-courier">Cable / courier</label>
+            <div class="input-group"><input class="input" id="lc-courier" name="lcCourier" type="number" inputmode="decimal" min="0" step="0.01" value="0"><span class="suffix">SAR</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="lg-inputs" hidden>
+        <div class="field">
+          <label for="lg-type">Transaction</label>
+          <select class="select" id="lg-type" name="lgType">
+            <option value="new" selected>New guarantee</option>
+            <option value="extension">Extension of validity</option>
+          </select>
+          <span class="helper">An extension is charged at the same annual rate for the added period.</span>
+        </div>
+        <div class="field">
+          <label for="lg-amount">Guarantee amount</label>
+          <div class="input-group"><input class="input" id="lg-amount" name="lgAmount" type="number" inputmode="decimal" min="0" step="0.01" value="2000000"><span class="suffix">SAR</span></div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="lg-period">Validity period</label>
+            <input class="input" id="lg-period" name="lgPeriod" type="number" inputmode="decimal" min="0" step="1" value="365">
+          </div>
+          <div class="field">
+            <label for="lg-unit">Period unit</label>
+            <select class="select" id="lg-unit" name="lgUnit">
+              <option value="days" selected>Days (Actual/365)</option>
+              <option value="months">Months (part = full month)</option>
+            </select>
+          </div>
+        </div>
+        <label class="check"><input type="checkbox" id="lg-min" name="lgMin"> Apply the SAR 25 minimum fee for small guarantees</label>
+        <label class="check"><input type="checkbox" id="lg-bl" name="lgBl"> Add the SAR 20 missing bill-of-lading indemnity fee</label>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="vat">VAT</label>
+          <div class="input-group"><input class="input" id="vat" name="vat" type="number" inputmode="decimal" min="0" step="0.01" value="15"><span class="suffix">%</span></div>
+        </div>
+        <div class="field">
+          <label for="charged">Amount charged by the bank <span class="helper">(optional)</span></label>
+          <div class="input-group"><input class="input" id="charged" name="charged" type="number" inputmode="decimal" min="0" step="0.01" placeholder="e.g. 5067.19"><span class="suffix">SAR</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel print-target">
+      <h2 class="panel__title" id="result-title">Result</h2>
+      <div class="result">
+        <p class="result__label">Total commission including VAT</p>
+        <p class="result__value" id="total" aria-live="polite" aria-atomic="true">—</p>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table" aria-labelledby="result-title">
+          <thead><tr><th scope="col">Item</th><th scope="col" class="num">SAR</th></tr></thead>
+          <tbody id="lines"></tbody>
+        </table>
+      </div>
+      <div class="status-box is-none" id="variance">Enter the amount charged by the bank to compare it with the calculated total.</div>
+      <div class="btn-row no-print" style="margin-block-start: var(--sp-6)">
+        <button type="button" class="btn btn--tertiary btn--sm" id="print">Print result {{icon:print}}</button>
+        <button type="reset" class="btn btn--ghost btn--sm" id="reset">Reset example</button>
+      </div>
+    </div>
+  </form>
+
+  <section class="section" aria-labelledby="assume-title">
+    <h2 class="h2" id="assume-title">How the demo calculates</h2>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead><tr><th scope="col">Topic</th><th scope="col">Assumption in this demo</th></tr></thead>
+        <tbody>
+          <tr><td>Currency and units</td><td>All amounts in Saudi riyals (SAR). Rates are percentages of the amount; fees are flat SAR amounts.</td></tr>
+          <tr><td>L/C opening or increase</td><td>¼% on the first SAR 400,000 plus ⅛% on the excess, covering the first 3 months; plus 1/16% of the full amount for each further month. For an increase, the amount is the increase only.</td></tr>
+          <tr><td>L/C period</td><td>Months, rounded <em>up</em> to whole months (3.2 months → 4). Up to 3 months costs the same as exactly 3.</td></tr>
+          <tr><td>L/C extension</td><td>1/16% of the full L/C amount per month of extension, rounded up to whole months.</td></tr>
+          <tr><td>L/C advising / other amendment</td><td>Advising: SAR 20 flat. Other amendment: the fee you enter (SAR 25 by default) plus telex or mail costs.</td></tr>
+          <tr><td>Letter of guarantee</td><td>Annual rate of ¼% on the first SAR 10,000,000 plus ⅛% on the excess, pro-rated by <em>days ÷ 365</em>, or by <em>whole months ÷ 12</em> (part months rounded up).</td></tr>
+          <tr><td>Minimum fees</td><td>L/C: only the bank minimum you enter (none by default). Guarantee: optional SAR 25 floor, applied before the optional SAR 20 missing bill-of-lading fee.</td></tr>
+          <tr><td>VAT</td><td>Applied to the subtotal at the rate you enter (15% by default).</td></tr>
+          <tr><td>Rounding</td><td>No rounding inside the calculation; figures are shown rounded to 2 decimals. A difference under SAR 0.01 counts as a match.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small muted" style="margin-block-start: var(--sp-5)">Rates as used by the original tool, which cites SAMA, Fees Guide for Financial Institutions’ Services. Edition and effective date not verified for this demo.</p>
+  </section>
+</div>

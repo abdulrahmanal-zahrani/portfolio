@@ -1,0 +1,99 @@
+<!--meta
+{
+  "path": "demo/trade-documents/index.html",
+  "title": "Trade document generator — demo",
+  "description": "Interactive demo that prepares an export cover letter and bill of exchange from one entry, with the amount in words. Fictional data only.",
+  "nav": "projects",
+  "bodyClass": "demo-print-scope",
+  "scripts": ["assets/js/demo/words-engine.js", "assets/js/demo/documents.js"],
+  "breadcrumb": [["Projects", "projects/"], ["Trade Finance Document Generator", "projects/trade-documents-generator/"], ["Demo", null]]
+}
+-->
+<div class="container">
+  <header class="page-head">
+    {{breadcrumb}}
+    <p class="eyebrow">Demo — fictional data</p>
+    <h1 class="h1">Trade document generator</h1>
+    <p class="lead">Fill in the shipment once; the cover letter and the bill of exchange update together, with the amount written out in words.</p>
+  </header>
+
+  <div class="notice" role="note">
+    {{icon:info}}
+    <p><strong>Rebuilt for this portfolio.</strong> Every name, bank and number here is fictional (Example Company, Demo Bank). Nothing you type is sent anywhere — it stays in this page.</p>
+  </div>
+
+  <form id="docs-form" class="demo-grid" novalidate>
+    <div class="panel">
+      <h2 class="panel__title">Shipment details</h2>
+      <div class="field-row">
+        <div class="field"><label for="f-date">Document date</label><input class="input" id="f-date" name="date" type="date"></div>
+        <div class="field"><label for="f-currency">Currency</label>
+          <select class="select" id="f-currency" name="currency">
+            <option value="USD" selected>USD — US Dollars</option>
+            <option value="EUR">EUR — Euros</option>
+            <option value="SAR">SAR — Saudi Riyals</option>
+            <option value="AED">AED — UAE Dirhams</option>
+            <option value="GBP">GBP — Pounds Sterling</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label for="f-lc">L/C number</label><input class="input" id="f-lc" name="lc" autocomplete="off"></div>
+        <div class="field"><label for="f-ref">Our reference</label><input class="input" id="f-ref" name="ourRef" autocomplete="off"></div>
+      </div>
+      <div class="field"><label for="f-customer">Customer (applicant)</label><input class="input" id="f-customer" name="customer" autocomplete="off"></div>
+      <div class="field"><label for="f-company">Exporter (drawer)</label><input class="input" id="f-company" name="company" autocomplete="off"></div>
+
+      <fieldset>
+        <legend class="label">Invoices</legend>
+        <div class="row-editor" id="invoices"></div>
+        <button type="button" class="btn btn--ghost btn--sm" id="add-invoice">Add invoice {{icon:add}}</button>
+      </fieldset>
+
+      <fieldset>
+        <legend class="label">Amount in words</legend>
+        <label class="check"><input type="checkbox" id="f-words-auto" name="wordsAuto" checked> Generate from the invoice total</label>
+        <div class="field"><label for="f-words" class="visually-hidden">Amount in words</label>
+          <textarea class="input" id="f-words" name="words" rows="3" style="padding-block: var(--sp-3)" readonly></textarea>
+        </div>
+      </fieldset>
+
+      <h2 class="panel__title" style="margin-block-start: var(--sp-7)">Banks</h2>
+      <div class="field"><label for="f-receiving">Addressed to (presenting bank)</label><input class="input" id="f-receiving" name="receivingBank" autocomplete="off"></div>
+      <div class="field-row">
+        <div class="field"><label for="f-ben-bank">Beneficiary bank</label><input class="input" id="f-ben-bank" name="benBank" autocomplete="off"></div>
+        <div class="field"><label for="f-ben-acct">Account (demo)</label><input class="input" id="f-ben-acct" name="benAccount" autocomplete="off"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label for="f-drawee">Drawee bank</label><input class="input" id="f-drawee" name="drawee" autocomplete="off"></div>
+        <div class="field"><label for="f-place">Place of issue</label><input class="input" id="f-place" name="place" autocomplete="off"></div>
+      </div>
+
+      <fieldset>
+        <legend class="label">Documents enclosed (originals / copies)</legend>
+        <div class="row-editor" id="doc-rows"></div>
+        <div class="btn-row">
+          <button type="button" class="btn btn--ghost btn--sm" id="add-doc">Add document {{icon:add}}</button>
+          <button type="button" class="btn btn--ghost btn--sm" id="reset-docs">Reset to standard set</button>
+        </div>
+      </fieldset>
+      <button type="button" class="btn btn--tertiary btn--sm" id="reset-all">Reset the whole example</button>
+    </div>
+
+    <div class="print-target">
+      <fieldset class="no-print">
+        <legend class="label">Preview</legend>
+        <div class="switcher">
+          <label><input type="radio" name="view" value="cover" checked><span>Cover letter</span></label>
+          <label><input type="radio" name="view" value="boe1"><span>Bill of exchange — first</span></label>
+          <label><input type="radio" name="view" value="boe2"><span>Second</span></label>
+        </div>
+      </fieldset>
+      <div class="doc-stage" id="preview"></div>
+      <div class="btn-row no-print" style="margin-block-start: var(--sp-5)">
+        <button type="button" class="btn btn--primary" id="print-one">Print this document {{icon:print}}</button>
+        <button type="button" class="btn btn--tertiary" id="print-all">Print all three</button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,94 @@
+{
+  "siteUrl": "https://abdulrahmanal-zahrani.github.io/portfolio/",
+  "basePath": "/portfolio/",
+  "defaultLocale": "en",
+  "locales": {
+    "en": { "lang": "en", "dir": "ltr", "prefix": "" }
+  },
+  "person": {
+    "name": { "en": "Abdulrahman Alzahrani" },
+    "descriptor": { "en": "Finance • Treasury • Automation" },
+    "intro": {
+      "en": "I work in corporate treasury and build practical tools that turn repetitive finance work — bank documents, commission checks, everyday calculations — into structured steps that are easy to check."
+    },
+    "portrait": {
+      "src": "assets/img/portrait-400.webp",
+      "srcset": "assets/img/portrait-400.webp 400w, assets/img/portrait-800.webp 800w",
+      "fallback": "assets/img/portrait-400.jpg",
+      "width": 400,
+      "height": 400,
+      "alt": { "en": "Portrait of Abdulrahman Alzahrani" }
+    }
+  },
+  "focus": [
+    {
+      "title": { "en": "Treasury & trade finance" },
+      "text": { "en": "Letters of credit, letters of guarantee and bills for collection; payments and bank reconciliations." }
+    },
+    {
+      "title": { "en": "Financial analysis" },
+      "text": { "en": "Financial modeling and valuation (FMVA®), financial analysis and customer credit analysis." }
+    },
+    {
+      "title": { "en": "Tools & automation" },
+      "text": { "en": "Browser-based tools that prepare bank documents, check charges and run calculations, built around real finance workflows." }
+    }
+  ],
+  "contact": [
+    { "id": "linkedin", "label": { "en": "LinkedIn" }, "text": { "en": "Connect on LinkedIn" }, "href": "https://www.linkedin.com/in/abdulrahman-alzahrani-43713128b", "external": true },
+    { "id": "email", "label": { "en": "Email" }, "text": { "en": "abdulrahmanfin@outlook.com" }, "href": "mailto:abdulrahmanfin@outlook.com" },
+    { "id": "whatsapp", "label": { "en": "WhatsApp" }, "text": { "en": "Chat on WhatsApp" }, "href": "https://wa.me/966508498788", "external": true }
+  ],
+  "documents": {
+    "fmva": {
+      "file": "Resources/Certificates/FMVA.pdf",
+      "title": { "en": "FMVA® certificate" },
+      "back": "certificates.html"
+    },
+    "references": {
+      "file": "Resources/References.pdf",
+      "title": { "en": "Recommendation letters" },
+      "back": "references.html"
+    }
+  },
+  "strings": {
+    "en": {
+      "skip": "Skip to main content",
+      "menu": "Menu",
+      "navProjects": "Projects",
+      "navCv": "CV",
+      "navCertificates": "Certificates",
+      "navContact": "Contact",
+      "home": "Home",
+      "viewProjects": "View projects",
+      "viewCv": "View CV",
+      "focusHeading": "What I work on",
+      "selectedWork": "Selected work",
+      "allProjects": "All projects",
+      "readCaseStudy": "Read case study",
+      "credentialsHeading": "Credentials",
+      "contactHeading": "Contact",
+      "contactText": "The quickest way to reach me is by email or LinkedIn.",
+      "projectsTitle": "Projects",
+      "projectsIntro": "Tools and applications I have built. Internal tools are shown as case studies; any interactive demo on this site is a separate rebuild that uses fictional data.",
+      "problem": "The problem",
+      "whatItDoes": "What it does",
+      "myRole": "My role",
+      "outcome": "Outcome",
+      "type": "Type",
+      "status": "Status",
+      "year": "Year",
+      "technologies": "Technologies",
+      "partOf": "Part of",
+      "alsoIn": "Also in this toolkit:",
+      "openDemo": "Open demo",
+      "viewSource": "View source code",
+      "previous": "Previous",
+      "next": "Next",
+      "backToProjects": "Back to all projects",
+      "demoNotice": "Demo — fictional data",
+      "footerNote": "Interactive demos on this site use fictional companies, banks and reference numbers.",
+      "externalLink": "opens in a new tab"
+    }
+  }
+}

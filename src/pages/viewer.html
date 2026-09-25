@@ -1,0 +1,32 @@
+<!--meta
+{
+  "path": "viewer.html",
+  "title": "Document",
+  "description": "Document viewer.",
+  "nav": "certificates",
+  "noindex": true,
+  "scripts": ["assets/js/viewer.js"],
+  "breadcrumb": [["Document", null]]
+}
+-->
+<div class="container">
+  <header class="page-head">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li aria-current="page" id="viewer-crumb">Document</li></ol></nav>
+    <h1 class="h1" id="viewer-title">Document</h1>
+  </header>
+  {{doc-allowlist}}
+  <div id="viewer-found" hidden>
+    <div class="btn-row no-print" style="margin-block-end: var(--sp-6)">
+      <a class="btn btn--primary btn--sm" id="viewer-open" href="#" target="_blank" rel="noopener">Open PDF<span class="visually-hidden"> (opens in a new tab)</span> {{icon:external}}</a>
+      <a class="btn btn--tertiary btn--sm" id="viewer-download" href="#">Download {{icon:download}}</a>
+      <a class="btn btn--ghost btn--sm" id="viewer-back" href="index.html">{{icon:back}} <span>Back</span></a>
+    </div>
+    <iframe class="viewer-frame" id="viewer-frame" title="Document"></iframe>
+    <p class="small muted" style="margin-block-start: var(--sp-4)">If the document does not appear on your device, use “Open PDF”.</p>
+  </div>
+  <div id="viewer-missing" hidden>
+    <p>This document is not available.</p>
+    <p><a class="link" href="certificates.html">Certificates</a> · <a class="link" href="references.html">References</a> · <a class="link" href="index.html">Home</a></p>
+  </div>
+  <noscript><p>The viewer needs JavaScript. You can open the <a class="link" href="Resources/Certificates/FMVA.pdf">FMVA® certificate</a> or the <a class="link" href="Resources/References.pdf">recommendation letters</a> directly.</p></noscript>
+</div>
