@@ -85,7 +85,7 @@ ${page.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonica
 <meta property="og:url" content="${attr(canonical)}">
 <meta property="og:image" content="${attr(ogImage)}">
 <meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image:height" content="627">
 <meta property="og:image:alt" content="${attr(name + ' — ' + t(site.person.descriptor))}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#161616">
