@@ -26,6 +26,63 @@
   },
   "projects": [
     {
+      "slug": "receivables-reporting",
+      "featured": true,
+      "status": "internal",
+      "year": "2026",
+      "title": {
+        "en": "Receivables Reporting Pack"
+      },
+      "type": {
+        "en": "Internal tool · demo rebuilt with fictional data"
+      },
+      "summary": {
+        "en": "Turns the monthly AR bridge and overdue exports into a reconciled KPI scorecard, an AR bridge, cluster charts and a customer table — then generates the Excel master workbook, the PowerPoint deck and an email draft with both attached."
+      },
+      "problem": {
+        "en": "Month-end receivables reporting meant rebuilding the same workbook and slide deck by hand from system exports: matching customers across periods and files, reconciling balances, and re-keying figures into tables and charts."
+      },
+      "features": {
+        "en": [
+          "Reads .xlsx workbooks in the browser and finds the right columns by scoring header names, so changed headings or column order do not break it; the period is inferred from headers and sheet names.",
+          "Reconciliation checks: the AR roll-forward (beginning + sales + collections + offsets = ending), duplicate codes, customers missing from a period or from the overdue file, and low-confidence column matches.",
+          "KPI scorecard comparing the month with the same month last year, with the favourable or unfavourable direction stated for each measure.",
+          "AR bridge (waterfall) for the whole portfolio or any single customer, cluster charts for sales, collections, receivables and overdue amounts, and a searchable customer table.",
+          "Generates an Excel master workbook with formulas and native charts (11 sheets), a 12-slide PowerPoint deck with native charts, and an .eml email draft with both files attached.",
+          "Column mapping and cluster reclassification can be overridden in the page and are remembered in the browser."
+        ]
+      },
+      "technologies": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "Office Open XML",
+        "SVG"
+      ],
+      "role": null,
+      "outcome": null,
+      "notice": {
+        "en": "The original is an internal tool and is not linked here. The demo is a redacted copy: company name, logo, brand colours, customer codes and internal process settings were removed, and it loads generated sample workbooks with invented customers and amounts."
+      },
+      "image": {
+        "src": "assets/img/projects/receivables-reporting-1280.webp",
+        "srcset": "assets/img/projects/receivables-reporting-640.webp 640w, assets/img/projects/receivables-reporting-1280.webp 1280w",
+        "width": 1280,
+        "height": 800,
+        "alt": {
+          "en": "Demo of the receivables reporting pack: KPI scorecard and AR bridge built from fictional sample data."
+        },
+        "caption": {
+          "en": "Portfolio demo with fictional sample data."
+        }
+      },
+      "links": {
+        "demo": "demo/receivables-reporting/",
+        "source": null,
+        "live": null
+      }
+    },
+    {
       "slug": "trade-documents-generator",
       "featured": true,
       "status": "internal",
@@ -84,8 +141,63 @@
       "family": "trade-toolkit"
     },
     {
-      "slug": "lc-lg-commission-calculator",
+      "slug": "numbers-to-words",
       "featured": true,
+      "status": "internal",
+      "year": "2026",
+      "title": {
+        "en": "Numbers to Words Converter"
+      },
+      "type": {
+        "en": "Treasury tool · English and Arabic"
+      },
+      "summary": {
+        "en": "Writes a financial amount out in words in English and Arabic for 156 currencies — the wording used on cheques, bills of exchange and bank letters — with correct Arabic grammatical agreement and no rounding."
+      },
+      "problem": {
+        "en": "Amounts in words must match the figures exactly. In Arabic the wording also changes with the number: the gender of the currency, the dual form for two, and the case of the counted noun all depend on the amount, which makes manual wording slow and error-prone."
+      },
+      "features": {
+        "en": [
+          "English and Arabic wording side by side, with the “… and 50/100 … Only” and “… فقط لا غير” conventions.",
+          "Arabic rules for gender agreement, the dual, the counted noun after 3–10 and 11–99, and construct forms such as “ألفا ريال”.",
+          "156 currencies, including three-decimal currencies such as the Kuwaiti dinar, plus a custom currency definition.",
+          "Validation that rejects malformed amounts or extra decimals with a clear message instead of rounding them.",
+          "Accepts Arabic-Indic digits, inserts thousands separators while typing, and copies either wording with one click.",
+          "A built-in check suite of 154 cases covering formatting, grammar and error handling."
+        ]
+      },
+      "technologies": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "role": null,
+      "outcome": null,
+      "notice": {
+        "en": "The tool on this site is the original converter restyled for the portfolio; its conversion code is unchanged."
+      },
+      "image": {
+        "src": "assets/img/projects/numbers-to-words-1280.webp",
+        "srcset": "assets/img/projects/numbers-to-words-640.webp 640w, assets/img/projects/numbers-to-words-1280.webp 1280w",
+        "width": 1280,
+        "height": 800,
+        "alt": {
+          "en": "The numbers to words converter showing an amount written out in English and Arabic."
+        },
+        "caption": {
+          "en": "The converter running on this site."
+        }
+      },
+      "links": {
+        "demo": "demo/numbers-to-words/",
+        "source": null,
+        "live": null
+      }
+    },
+    {
+      "slug": "lc-lg-commission-calculator",
+      "featured": false,
       "status": "internal",
       "year": "2026",
       "title": {
@@ -137,61 +249,6 @@
         "live": null
       },
       "family": "trade-toolkit"
-    },
-    {
-      "slug": "mihsab",
-      "featured": true,
-      "status": "public",
-      "year": "2026",
-      "title": {
-        "en": "Mihsab — calculator platform"
-      },
-      "type": {
-        "en": "Web app · Arabic and English"
-      },
-      "summary": {
-        "en": "An Arabic-first web platform of 21 everyday calculators in four categories — money, cars, travel and lifestyle — including zakat, VAT, salary and loan calculators."
-      },
-      "problem": {
-        "en": "Everyday calculations that depend on local rules — zakat, VAT, social-insurance deductions, fuel prices — need a tool that applies those rules and works in Arabic as well as English."
-      },
-      "features": {
-        "en": [
-          "21 calculators grouped into money, cars, travel and lifestyle, with search across all of them.",
-          "Arabic and English versions with right-to-left and left-to-right layouts.",
-          "Calculation logic kept separate from the interface and covered by automated unit tests.",
-          "Accepts Arabic-Indic digits in number fields.",
-          "Results can be shared through the page address; static assets are cached for offline use."
-        ]
-      },
-      "technologies": [
-        "Next.js",
-        "React",
-        "TypeScript",
-        "next-intl",
-        "Tailwind CSS",
-        "Vitest"
-      ],
-      "role": null,
-      "outcome": null,
-      "notice": null,
-      "image": {
-        "src": "assets/img/projects/mihsab-1280.webp",
-        "srcset": "assets/img/projects/mihsab-640.webp 640w, assets/img/projects/mihsab-1280.webp 1280w",
-        "width": 1280,
-        "height": 800,
-        "alt": {
-          "en": "Arabic home page of the Mihsab calculator platform."
-        },
-        "caption": {
-          "en": "Home page (Arabic), captured from a local build of the project and shown in grayscale."
-        }
-      },
-      "links": {
-        "demo": null,
-        "source": "https://github.com/abdulrahmanal-zahrani/Calculator-more",
-        "live": null
-      }
     }
   ]
 }

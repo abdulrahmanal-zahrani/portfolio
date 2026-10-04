@@ -94,7 +94,7 @@ ${page.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonica
 <link rel="preload" href="${r}assets/fonts/IBMPlexSans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${r}assets/css/fonts.css">
 <link rel="stylesheet" href="${r}assets/css/site.css">
-<script>document.documentElement.classList.add('js')</script>
+${(page.styles || []).map((href) => `<link rel="stylesheet" href="${r}${href}">`).join('\n')}${page.styles ? '\n' : ''}<script>document.documentElement.classList.add('js')</script>
 ${page.head || ''}</head>
 <body${page.bodyClass ? ` class="${page.bodyClass}"` : ''} data-site-name="${attr(name)}">
 <a class="skip-link" href="#main">${esc(s.skip)}</a>

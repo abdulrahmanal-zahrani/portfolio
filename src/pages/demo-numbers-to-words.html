@@ -1,0 +1,114 @@
+<!--meta
+{
+  "path": "demo/numbers-to-words/index.html",
+  "title": "Numbers to words converter",
+  "description": "Converts financial amounts to words in English and Arabic for 156 currencies, with Arabic grammatical agreement and no rounding.",
+  "nav": "projects",
+  "styles": ["assets/css/demo-n2w.css"],
+  "scripts": ["assets/js/demo/n2w-core.js", "assets/js/demo/n2w-ui.js"],
+  "breadcrumb": [["Projects", "projects/"], ["Numbers to Words Converter", "projects/numbers-to-words/"], ["Tool", null]]
+}
+-->
+<div class="container">
+  <header class="page-head">
+    {{breadcrumb}}
+    <p class="eyebrow">Working tool · English and Arabic</p>
+    <h1 class="h1">Numbers to words converter</h1>
+    <p class="lead">Type an amount and pick a currency. The amount is written out in English and Arabic, ready to copy into a cheque, bill of exchange or letter.</p>
+  </header>
+
+  <div class="notice" role="note">
+    {{icon:info}}
+    <p><strong>Runs entirely in your browser.</strong> Nothing you type is sent anywhere. Amounts are never rounded: an entry with more decimals than the currency allows is rejected with a message instead.</p>
+  </div>
+
+  <div id="ntw" class="ntw" lang="en" dir="ltr">
+    <div class="ntw__bar">
+      <h2 class="ntw__title" data-i18n="appTitle">Numbers to Words Converter</h2>
+      <div class="seg" id="langSwitch" role="group" aria-label="Interface language">
+        <button type="button" id="langEn" aria-pressed="true" lang="en">EN</button>
+        <button type="button" id="langAr" aria-pressed="false" lang="ar">AR</button>
+      </div>
+    </div>
+
+    <section class="tile" aria-labelledby="inputHeading">
+      <h3 id="inputHeading" data-i18n="sectionInput">Amount Details</h3>
+      <div class="tile-body">
+        <div class="grid">
+          <div class="field span2">
+            <label for="amount" data-i18n="labelAmount">Amount</label>
+            <input id="amount" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="123,456.78" aria-describedby="amountHint">
+            <span class="hint" id="amountHint" data-i18n="hintAmount">Thousands separators are inserted automatically. Maximum two decimal places.</span>
+          </div>
+          <div class="field">
+            <label for="currencyFilter" data-i18n="labelFilter">Find currency</label>
+            <input id="currencyFilter" type="search" autocomplete="off" spellcheck="false" placeholder="USD, Dollar, SAR, Riyal">
+          </div>
+          <div class="field">
+            <label for="currency" data-i18n="labelCurrency">Currency</label>
+            <select id="currency" size="1"></select>
+          </div>
+        </div>
+
+        <div id="customPanel" hidden>
+          <p class="panel-title" data-i18n="customTitle">Custom currency definition</p>
+          <div class="grid">
+            <div class="field"><label for="cCode" data-i18n="customCode">ISO code</label><input id="cCode" maxlength="6" autocomplete="off" placeholder="XYZ"></div>
+            <div class="field"><label for="cGender" data-i18n="customGender">Arabic gender</label>
+              <select id="cGender"><option value="m" data-i18n="genderM">Masculine</option><option value="f" data-i18n="genderF">Feminine</option></select>
+            </div>
+            <div class="field"><label for="cEnS" data-i18n="customEnS">English singular</label><input id="cEnS" autocomplete="off" placeholder="Gold Ounce"></div>
+            <div class="field"><label for="cEnP" data-i18n="customEnP">English plural</label><input id="cEnP" autocomplete="off" placeholder="Gold Ounces"></div>
+            <div class="field"><label for="cArS" data-i18n="customArS">Arabic singular</label><input id="cArS" dir="rtl" autocomplete="off" placeholder="أونصة ذهب"></div>
+            <div class="field"><label for="cArD" data-i18n="customArD">Arabic dual</label><input id="cArD" dir="rtl" autocomplete="off" placeholder="أونصتا ذهب"></div>
+            <div class="field"><label for="cArP" data-i18n="customArP">Arabic plural</label><input id="cArP" dir="rtl" autocomplete="off" placeholder="أونصات ذهب"></div>
+            <div class="field"><label for="cArA" data-i18n="customArA">Arabic accusative</label><input id="cArA" dir="rtl" autocomplete="off" placeholder="أونصةً ذهب"></div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" id="btnClear" data-i18n="btnClear">Clear</button>
+        </div>
+        <p class="error" id="error" role="alert"></p>
+      </div>
+    </section>
+
+    <section class="tile" id="results" aria-labelledby="resultHeading">
+      <h3 id="resultHeading" data-i18n="sectionResult">Conversion Result</h3>
+      <div class="tile-body">
+        <div class="res-block">
+          <div class="res-head">
+            <span class="lbl" data-i18n="labelNumeric">Numeric Amount</span>
+            <span class="copied" id="copiedNum" role="status" aria-atomic="true"></span>
+          </div>
+          <p class="amount-line" id="outNumeric"></p>
+        </div>
+        <div class="divider"></div>
+        <div class="res-block">
+          <div class="res-head">
+            <span class="lbl" data-i18n="labelWordsEn">Amount in Words — English</span>
+            <span style="display:flex;align-items:center;gap:10px">
+              <span class="copied" id="copiedEn" role="status" aria-atomic="true"></span>
+              <button type="button" class="btn-sm" id="btnCopyEn" data-i18n="btnCopy">Copy</button>
+            </span>
+          </div>
+          <p class="words" id="outEnglish" dir="ltr" lang="en"></p>
+        </div>
+        <div class="res-block">
+          <div class="res-head">
+            <span class="lbl" data-i18n="labelWordsAr">Amount in Words — Arabic</span>
+            <span style="display:flex;align-items:center;gap:10px">
+              <span class="copied" id="copiedAr" role="status" aria-atomic="true"></span>
+              <button type="button" class="btn-sm" id="btnCopyAr" data-i18n="btnCopy">Copy</button>
+            </span>
+          </div>
+          <p class="words ar" id="outArabic" dir="rtl" lang="ar"></p>
+        </div>
+        <div class="actions">
+          <button type="button" id="btnCopyResult" class="btn-primary" data-i18n="btnCopyResult">Copy Amount in Words</button>
+          <button type="button" id="btnCopyAll" data-i18n="btnCopyAll">Copy All</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

@@ -10,9 +10,9 @@ const require = createRequire(import.meta.url);
 const AXE = readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
 const BASE = 'http://localhost:8080/portfolio/';
 const OUT = process.argv[2];
-const PAGES = ['', 'projects/', 'projects/trade-documents-generator/', 'projects/lc-lg-commission-calculator/',
-  'projects/mihsab/', 'demo/trade-documents/', 'demo/commission-calculator/',
-  'cv.html', 'certificates.html', 'references.html', 'viewer.html?doc=fmva'];
+const PAGES = ['', 'projects/', 'projects/receivables-reporting/', 'projects/trade-documents-generator/', 'projects/numbers-to-words/',
+  'projects/lc-lg-commission-calculator/', 'demo/receivables-reporting/', 'demo/trade-documents/', 'demo/numbers-to-words/',
+  'demo/commission-calculator/', 'cv.html', 'certificates.html', 'references.html', 'viewer.html?doc=fmva'];
 
 let pass = 0, fail = 0;
 const results = [];
@@ -59,8 +59,8 @@ for (const p of PAGES) {
 //   301      host-side redirect (GitHub Pages does this for directories)
 //   404+JS   the host answers 404 with 404.html, whose script redirects
 const redirects = [
-  ['cv', 'cv', '200'], ['projects', 'projects/', '301'], ['projects/mihsab', 'projects/mihsab/', '301'],
-  ['CV.html', 'cv.html', '404+JS'], ['Index.html', '', '404+JS'], ['Projects/Mihsab/', 'projects/mihsab/', '404+JS'],
+  ['cv', 'cv', '200'], ['projects', 'projects/', '301'], ['projects/trade-documents-generator', 'projects/trade-documents-generator/', '301'],
+  ['CV.html', 'cv.html', '404+JS'], ['Index.html', '', '404+JS'], ['Projects/Trade-Documents-Generator/', 'projects/trade-documents-generator/', '404+JS'],
   ['Certificates.HTML', 'certificates.html', '404+JS'], ['Resources/Referances.pdf', 'Resources/References.pdf', '404+JS'],
   ['Resources/References/Recommendation1.pdf', 'references.html', '404+JS'],
   ['Resources/Recommendations/Recommendation5.pdf', 'references.html', '404+JS'],
@@ -196,6 +196,45 @@ check('docs', 'manual amount-in-words override', (await page.textContent('#previ
 await page.click('#reset-all');
 check('docs', 'reset restores the example', (await page.inputValue('#f-customer')) === 'Sample Trading LLC');
 
+// ---------- Numbers to words ----------
+await page.goto(BASE + 'demo/numbers-to-words/', { waitUntil: 'networkidle' });
+check('n2w', 'page does not steal focus on load', await page.evaluate(() => document.activeElement === document.body));
+await page.selectOption('#currency', 'SAR');
+await page.fill('#amount', '1250000.75');
+check('n2w', 'English wording', (await page.textContent('#outEnglish')) === 'One Million Two Hundred Fifty Thousand Saudi Riyals and 75/100 Only', await page.textContent('#outEnglish'));
+check('n2w', 'Arabic wording', (await page.textContent('#outArabic')) === 'مليون ومئتان وخمسون ألف ريال سعودي و75/100 فقط لا غير', await page.textContent('#outArabic'));
+await page.fill('#amount', '12.345');
+check('n2w', 'extra decimals rejected with a message, nothing rounded',
+  (await page.isVisible('#error')) && (await page.textContent('#outEnglish')) === '');
+await page.click('#langAr');
+check('n2w', 'Arabic switch flips only the tool, not the page',
+  await page.evaluate(() => document.getElementById('ntw').dir === 'rtl' && document.documentElement.dir === 'ltr' && document.documentElement.lang === 'en'));
+check('n2w', 'Arabic interface text uses IBM Plex Sans Arabic', await page.evaluate(async () => {
+  await document.fonts.ready; return [...document.fonts].some((f) => f.family.includes('Arabic') && f.status === 'loaded'); }));
+await page.click('#langEn');
+check('n2w', 'built-in suite passes in the page', await page.evaluate(() => { const r = window.__ntwSelfTest(); return r.failed === 0 && r.passed === 154; }));
+
+// ---------- Receivables reporting ----------
+await page.goto(BASE + 'demo/receivables-reporting/', { waitUntil: 'networkidle' });
+await page.click('#btnSample');
+await page.waitForSelector('#results:not(.hidden)', { timeout: 15000 });
+check('reporting', 'sample data loads: 4 KPI cards, 32 customers, 4 cluster charts',
+  (await page.locator('#kpiCards .kpi').count()) === 4 && (await page.locator('#dataTable tbody tr').count()) === 32 &&
+  (await page.locator('#clusterCharts .chart-card').count()) === 4);
+check('reporting', 'AR bridge reconciles on the sample', (await page.textContent('#valList')).includes('AR bridge reconciles across all 32 customers'));
+check('reporting', 'no logo or company image anywhere on the page', (await page.locator('#rpt img').count()) === 0);
+for (const [btn, re] of [['#btnXlsx', /^Master Sheet - Jul - 2026\.xlsx$/], ['#btnPptx', /^Receivables Report - Jul - 2026\.pptx$/],
+  ['#btnEmail', /^Receivables Report - Jul - 2026\.eml$/]]) {
+  const [d] = await Promise.all([page.waitForEvent('download', { timeout: 30000 }), page.click(btn)]);
+  check('reporting', `${btn} produces ${d.suggestedFilename()}`, re.test(d.suggestedFilename()));
+  if (OUT) await d.saveAs(`${OUT}/${d.suggestedFilename()}`);
+  await page.waitForTimeout(400);
+}
+await page.click('#btnPreview');
+check('reporting', 'deck preview opens with 12 slides', (await page.textContent('#pvCount')) === '1 / 12');
+await page.keyboard.press('Escape');
+check('reporting', 'Escape closes the preview', !(await page.isVisible('#pvBack')));
+
 // ---------- Printing ----------
 if (OUT) {
   await page.goto(BASE + 'demo/trade-documents/', { waitUntil: 'networkidle' });
@@ -238,7 +277,7 @@ const dur = await r.evaluate(() => getComputedStyle(document.querySelector('.car
 check('motion', 'prefers-reduced-motion removes transitions', parseFloat(dur) < 0.001, dur);
 
 // ---------- RTL readiness (structure only; no Arabic content yet) ----------
-const rtlPages = ['', 'projects/', 'projects/mihsab/', 'demo/commission-calculator/', 'cv.html'];
+const rtlPages = ['', 'projects/', 'demo/commission-calculator/', 'cv.html'];
 for (const p of rtlPages) {
   for (const w of [1440, 390]) {
     await m.setViewportSize({ width: w, height: 800 });
@@ -250,7 +289,7 @@ for (const p of rtlPages) {
       return { ov, brandRight: brand.right > window.innerWidth / 2 };
     });
     check('rtl', `/portfolio/${p} at ${w}px with dir=rtl: mirrored header, no overflow`, res.ov <= 0 && res.brandRight, JSON.stringify(res));
-    if (OUT && (p === '' || p === 'projects/mihsab/')) await m.screenshot({ path: `${OUT}/rtl-${w}-${p.replace(/\W+/g, '-') || 'home'}.png`, fullPage: false });
+    if (OUT && (p === '' || p === 'projects/trade-documents-generator/')) await m.screenshot({ path: `${OUT}/rtl-${w}-${p.replace(/\W+/g, '-') || 'home'}.png`, fullPage: false });
   }
 }
 

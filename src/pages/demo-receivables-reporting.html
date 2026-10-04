@@ -1,0 +1,218 @@
+<!--meta
+{
+  "path": "demo/receivables-reporting/index.html",
+  "title": "Receivables reporting pack — demo",
+  "description": "Reads AR bridge and overdue workbooks in the browser and produces a KPI scorecard, AR bridge, cluster charts, an Excel master workbook and a PowerPoint deck. Fictional sample data.",
+  "nav": "projects",
+  "styles": ["assets/css/demo-reporting.css"],
+  "scripts": ["assets/js/demo/reporting.js"],
+  "breadcrumb": [["Projects", "projects/"], ["Receivables Reporting Pack", "projects/receivables-reporting/"], ["Demo", null]]
+}
+-->
+<div class="container">
+  <header class="page-head">
+    {{breadcrumb}}
+    <p class="eyebrow">Demo — fictional data</p>
+    <h1 class="h1">Receivables reporting pack</h1>
+    <p class="lead">Load the monthly AR bridge and overdue exports; the page reconciles them, builds the scorecard and charts, and generates the Excel workbook and PowerPoint deck.</p>
+  </header>
+  <div class="notice" role="note">
+    {{icon:info}}
+    <p><strong>Rebuilt for this portfolio.</strong> The original is an internal tool. This version has no company names, logos, colours or customer codes, and the sample workbooks are generated with invented customers and amounts. Files you load are read in this page only.</p>
+  </div>
+  <div class="rpt" id="rpt">
+    <p class="note" id="brandSub" style="margin:0 0 16px">Load the sample data or your own workbooks to begin.</p>
+  <!-- ============ INGEST ============ -->
+  <section class="sec" id="secIngest">
+    <div class="sec-hd">
+      <h2>1 &middot; Source Data</h2>
+      <p class="sub">Drop the AR bridge workbook and the overdue export — order and file names do not matter.</p>
+      <span class="grow"></span>
+      <button class="btn btn-primary" id="btnSample" type="button">Load fictional sample data</button>
+      <button class="btn" id="btnSampleFiles" type="button">Download sample workbooks</button>
+    </div>
+    <div class="dz" id="dropzone" tabindex="0" role="button" aria-label="Drop Excel files or browse">
+      <svg class="dz-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M24 32V10m0 0-8 8m8-8 8 8"/><path d="M8 30v6a4 4 0 0 0 4 4h24a4 4 0 0 0 4-4v-6"/>
+      </svg>
+      <h3>Drop Excel workbooks here</h3>
+      <p>or click to browse &mdash; <b>.xlsx</b> files are parsed entirely in your browser</p>
+      <p class="hint">Nothing is uploaded — files are read in this page only. Use the sample workbooks to try it.</p>
+      <input type="file" id="fileInput" accept=".xlsx,.xlsm" multiple hidden>
+    </div>
+    <div class="chips" id="fileChips"></div>
+  </section>
+
+  <!-- ============ EVERYTHING BELOW APPEARS AFTER PARSE ============ -->
+  <div id="results" class="hidden">
+
+    <!-- MAPPING -->
+    <section class="sec">
+      <details class="acc" id="mapAcc">
+        <summary>
+          <svg class="caret" width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M7 4l6 6-6 6z"/></svg>
+          <span>2 &middot; Field Mapping &amp; Overrides</span>
+          <span class="grow"></span>
+          <span id="mapBadge" class="badge badge-ok">auto-resolved</span>
+        </summary>
+        <div class="acc-body">
+          <div id="mapContent"></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- VALIDATION -->
+    <section class="sec">
+      <details class="acc" id="valAcc">
+        <summary>
+          <svg class="caret" width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M7 4l6 6-6 6z"/></svg>
+          <span>3 &middot; Reconciliation &amp; Validation</span>
+          <span class="grow"></span>
+          <span id="valBadge" class="badge badge-ok">all checks passed</span>
+        </summary>
+        <div class="acc-body">
+          <div class="vlist" id="valList"></div>
+          <p class="note">Parse log</p>
+          <div class="log" id="logBox"></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- KPIs -->
+    <section class="sec">
+      <div class="sec-hd">
+        <h2>4 &middot; Executive Scorecard</h2>
+        <p class="sub" id="kpiSub"></p>
+        <span class="grow"></span>
+        <span class="badge badge-neutral">Amounts in Millions SAR</span>
+      </div>
+      <div class="kpis" id="kpiCards"></div>
+    </section>
+
+    <!-- AR BRIDGE -->
+    <section class="sec">
+      <div class="sec-hd">
+        <h2>5 &middot; Accounts Receivable Bridge</h2>
+        <p class="sub">Beginning AR &rarr; Sales &rarr; Collections &rarr; AP Offset &rarr; Ending AR</p>
+        <span class="grow"></span>
+        <div class="field" style="flex-direction:row;align-items:center;gap:8px">
+          <label id="bridgeSelLbl" style="margin:0">Scope</label>
+          <div class="combo" id="bridgeCombo">
+            <button type="button" class="combo-btn" id="bridgeComboBtn" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="bridgeSelLbl">
+              <span class="lbl">Portfolio Total</span>
+              <svg class="car" width="12" height="12" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M4 7l6 6 6-6z"/></svg>
+            </button>
+            <div class="combo-pop">
+              <input type="search" id="bridgeComboSearch" placeholder="Search customer…" aria-label="Search customer">
+              <div class="combo-list" id="bridgeComboList" role="listbox"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card chart-card" id="bridgeCard"></div>
+    </section>
+
+    <!-- CLUSTER CHARTS -->
+    <section class="sec">
+      <div class="sec-hd">
+        <h2>6 &middot; Cluster Performance</h2>
+        <p class="sub" id="scopeSub"></p>
+        <span class="grow"></span>
+        <div class="seg" id="scopeSeg" role="group" aria-label="Cluster aggregation scope">
+          <button data-scope="top20" aria-pressed="true">Top 20 Cohort</button>
+          <button data-scope="full" aria-pressed="false">Full Portfolio</button>
+        </div>
+      </div>
+      <div class="chart-grid" id="clusterCharts"></div>
+    </section>
+
+    <!-- DETAIL TABLE -->
+    <section class="sec">
+      <div class="sec-hd">
+        <h2>7 &middot; Customer Detail</h2>
+        <span class="grow"></span>
+        <input class="input" id="tblSearch" type="search" placeholder="Search customer, code, cluster, country…" style="width:290px" aria-label="Search customers">
+        <select class="input" id="clusterFilter" aria-label="Filter by cluster"></select>
+      </div>
+      <div class="tbl-wrap"><table class="dt" id="dataTable"></table></div>
+      <p class="note" id="tblNote"></p>
+    </section>
+
+    <!-- COMMENTARY -->
+    <section class="sec">
+      <details class="acc" id="cmtAcc">
+        <summary>
+          <svg class="caret" width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M7 4l6 6-6 6z"/></svg>
+          <span>8 &middot; Overdue Commentary</span>
+          <span class="grow"></span>
+          <span class="badge badge-info">appears on Executive Summary slide</span>
+        </summary>
+        <div class="acc-body">
+          <p class="note" style="margin-bottom:12px">Free-text notes for the top overdue accounts. Saved locally and pre-filled next month.</p>
+          <div id="cmtList" class="grid"></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- EXPORT -->
+    <section class="sec">
+      <div class="sec-hd"><h2>9 &middot; Generate Deliverables</h2></div>
+      <div class="card card-pad">
+        <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+          <button class="btn btn-lg" id="btnPreview" title="Preview every slide before exporting">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 4c-4 0-7.2 3.2-8 6 .8 2.8 4 6 8 6s7.2-3.2 8-6c-.8-2.8-4-6-8-6Zm0 10a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.8a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4Z"/></svg>
+            Preview Report
+          </button>
+          <button class="btn btn-lg" id="btnEmail" title="Create an email draft (.eml) with both files already attached">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M2.5 5.5A1.5 1.5 0 0 1 4 4h12a1.5 1.5 0 0 1 1.5 1.5v9A1.5 1.5 0 0 1 16 16H4a1.5 1.5 0 0 1-1.5-1.5v-9Zm1.6-.2 5.9 4.4 5.9-4.4H4.1Z"/></svg>
+            Email with Attachments
+          </button>
+          <button class="btn btn-primary btn-lg" id="btnXlsx">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M4 3h8l4 4v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm7 1.5V7h2.5L11 4.5ZM6.6 9.5l1.4 2 1.4-2h1.7l-2.2 3 2.3 3.2H9.5L8 13.6l-1.5 2.1H4.8L7.1 12.5 4.9 9.5h1.7Z"/></svg>
+            Master Report (.xlsx)
+          </button>
+          <button class="btn btn-primary btn-lg" id="btnPptx">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M4 3h8l4 4v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm7 1.5V7h2.5L11 4.5ZM6 9.5h2.6a2.2 2.2 0 0 1 0 4.4H7.4v1.8H6V9.5Zm1.4 1.3v1.8h1.2a.9.9 0 0 0 0-1.8H7.4Z"/></svg>
+            <span id="btnPptxLabel">Export Report (.pptx)</span>
+          </button>
+          <button class="btn btn-lg" id="btnBoth">Generate Both</button>
+          <span class="grow" style="flex:1"></span>
+          <span id="expStatus" class="badge badge-neutral">ready</span>
+        </div>
+        <div class="bar hidden" id="expBar"><i style="width:0%"></i></div>
+        <dl class="kv" id="expInfo" style="margin-top:16px"></dl>
+      </div>
+    </section>
+
+  </div><!-- /results -->
+
+  <div class="empty" id="emptyState">
+    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="7" y="6" width="34" height="36" rx="3"/><path d="M14 16h20M14 24h20M14 32h12"/>
+    </svg>
+    <p>Load the source workbooks to begin.</p>
+  </div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<div class="pv-back" id="pvBack" role="dialog" aria-modal="true" aria-label="Report preview">
+  <div class="pv-bar">
+    <h3 id="pvTitle">Preview</h3>
+    <span class="badge badge-info" id="pvBadge">11 slides</span>
+    <span class="grow"></span>
+    <button class="btn" id="pvPrev" aria-label="Previous slide">&#8592; Prev</button>
+    <span class="pv-count" id="pvCount">1 / 11</span>
+    <button class="btn" id="pvNext" aria-label="Next slide">Next &#8594;</button>
+    <button class="btn btn-primary" id="pvDownload">Download .pptx</button>
+    <button class="btn btn-subtle btn-icon" id="pvClose" aria-label="Close preview">
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M5.3 4.3 10 9l4.7-4.7 1 1L11 10l4.7 4.7-1 1L10 11l-4.7 4.7-1-1L9 10 4.3 5.3z"/></svg>
+    </button>
+  </div>
+  <div class="pv-body">
+    <div class="pv-rail" id="pvRail"></div>
+    <div class="pv-stage" id="pvStage"></div>
+  </div>
+</div>
+
+  </div>
+</div>

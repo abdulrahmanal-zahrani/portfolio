@@ -14,7 +14,7 @@ from pathlib import Path
 from PIL import Image, ImageOps
 
 ROOT = Path(__file__).resolve().parents[2]
-NAMES = ['trade-documents', 'commission-calculator', 'mihsab']
+NAMES = ['trade-documents', 'commission-calculator', 'numbers-to-words', 'receivables-reporting']
 
 
 def main():

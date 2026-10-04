@@ -6,6 +6,9 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const C = require('../assets/js/demo/commission-engine.js');
 const W = require('../assets/js/demo/words-engine.js');
+globalThis.window = globalThis;
+require('../assets/js/demo/n2w-core.js');
+const N = globalThis.NumbersToWords;
 
 let failed = 0, passed = 0;
 function eq(name, actual, expected, tol = 1e-9) {
@@ -99,6 +102,27 @@ eq('words 1,234,567.89 GBP', W.amountToWords(1234567.89, 'GBP'),
 eq('words 2,000,017 (skips empty group)', W.intToWords(2000017), 'Two Million, Seventeen');
 eq('words string with commas', W.amountToWords('12,730.50', 'USD'), 'Twelve Thousand, Seven Hundred Thirty and 50/100 US Dollars');
 eq('money format', W.formatMoney('60980.5'), '60,980.50');
+
+// ---------- Numbers to words converter (independent expectations) ----------
+// Expected wording follows Modern Standard Arabic numeral rules: 1 and 2 follow
+// the noun, 3–10 take the opposite gender with a plural noun, 11–99 take a
+// singular accusative noun, and a dual before an annexed noun drops its nūn.
+const ar = (amount, cur) => N.convertAmount(amount, cur).arabic;
+const en = (amount, cur) => N.convertAmount(amount, cur).english;
+eq('n2w ar 1 SAR', ar('1', 'SAR'), 'ريال سعودي واحد فقط لا غير');
+eq('n2w ar 2 SAR (dual)', ar('2', 'SAR'), 'ريالان سعوديان فقط لا غير');
+eq('n2w ar 5 SAR (reverse gender, plural)', ar('5', 'SAR'), 'خمسة ريالات سعودية فقط لا غير');
+eq('n2w ar 15 SAR (accusative singular)', ar('15', 'SAR'), 'خمسة عشر ريالاً سعودياً فقط لا غير');
+eq('n2w ar 100 SAR', ar('100', 'SAR'), 'مئة ريال سعودي فقط لا غير');
+eq('n2w ar 2,000 SAR (construct dual)', ar('2000', 'SAR'), 'ألفا ريال سعودي فقط لا غير');
+eq('n2w ar 3 EGP', ar('3', 'EGP'), 'ثلاثة جنيهات مصرية فقط لا غير');
+eq('n2w en 21 USD', en('21', 'USD'), 'Twenty-One US Dollars Only');
+eq('n2w en 1,001.05 USD', en('1,001.05', 'USD'), 'One Thousand One US Dollars and 05/100 Only');
+eq('n2w KWD keeps 3 decimals', N.convertAmount('1.5', 'KWD').formatted, '1.500');
+eq('n2w rejects extra decimals (no rounding)', N.convertAmount('1.234', 'SAR').code, 'TOO_MANY_DECIMALS');
+eq('n2w rejects bad grouping', N.convertAmount('1,23', 'USD').code, 'BAD_COMMAS');
+eq('n2w rejects negatives', N.convertAmount('-5', 'USD').code, 'NEGATIVE');
+eq('n2w accepts Arabic-Indic digits', N.convertAmount('١٢٣', 'USD').formatted, '123.00');
 
 console.log(`${passed} passed, ${failed} failed`);
 process.exit(failed ? 1 : 0);
